@@ -1,9 +1,15 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 
 const NavBar = ({ numMovies }) => {
 	const [query, setQuery] = useState('');
 	return (
-		<nav className='nav-bar'>
+		<motion.nav
+			className='nav-bar'
+			initial={{ y: -20, opacity: 0 }}
+			animate={{ y: 0, opacity: 1 }}
+			transition={{ type: 'spring', stiffness: 60 }}
+		>
 			<div className='logo'>
 				<span role='img'>🍿</span>
 				<h1>Film Findr.</h1>
@@ -18,7 +24,7 @@ const NavBar = ({ numMovies }) => {
 			<p className='num-results'>
 				Found <strong>{numMovies}</strong> results
 			</p>
-		</nav>
+		</motion.nav>
 	);
 };
 
