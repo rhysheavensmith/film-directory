@@ -61,6 +61,8 @@ export default function App() {
 		setNumMovies(movies.length);
 	}, [movies]);
 
+	// const key = import.meta.env.VITE_API_KEY;
+
 	return (
 		<>
 			<NavBar numMovies={numMovies} />

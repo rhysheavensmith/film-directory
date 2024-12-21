@@ -25,6 +25,7 @@ const MovieList = ({ movies }) => {
 						animate='visible'
 						repeat={1}
 						repeatType='reverse'
+						layout
 						variants={{
 							hidden: {
 								opacity: 0,
@@ -37,7 +38,12 @@ const MovieList = ({ movies }) => {
 						}}
 					>
 						{movies?.map((movie) => (
-							<motion.li key={movie.imdbID} variants={itemVariants}>
+							<motion.li
+								key={movie.imdbID}
+								variants={itemVariants}
+								whileHover={{ scale: 1.05, cursor: 'pointer' }}
+								transition={{ type: 'spring', stiffness: 200 }}
+							>
 								<img src={movie.Poster} alt={`${movie.Title} poster`} />
 								<h3>{movie.Title}</h3>
 								<div>
