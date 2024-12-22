@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import Button from './Button';
 
 const MovieList = ({ movies }) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(true);
 
 	// Define animation variants for the list items
 	const itemVariants = {
@@ -47,8 +47,7 @@ const MovieList = ({ movies }) => {
 								<img src={movie.Poster} alt={`${movie.Title} poster`} />
 								<h3>{movie.Title}</h3>
 								<div>
-									<p>
-										<span>🗓</span>
+									<p style={{ opacity: 0.7, marginTop: '0.5rem' }}>
 										<span>{movie.Year}</span>
 									</p>
 								</div>

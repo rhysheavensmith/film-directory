@@ -89,7 +89,11 @@ export default function App() {
 
 	return (
 		<>
-			<NavBar numMovies={numMovies} onSearch={handleSearch} />
+			<NavBar
+				numMovies={numMovies}
+				onSearch={handleSearch}
+				query={searchQuery}
+			/>
 			<Main>
 				<MovieList movies={movies} />
 				<WatchedList watched={watched} />
