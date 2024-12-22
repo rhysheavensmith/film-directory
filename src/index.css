@@ -44,7 +44,11 @@ body {
 
 @media (max-width: 950px) {
 	.nav-bar input {
-		max-width: 70%;
+		max-width: 50%;
+	}
+
+	.nav-bar p {
+		display: none;
 	}
 }
 
@@ -107,9 +111,14 @@ body {
 }
 
 @media (max-width: 950px) {
-	.logo h1 {
+	.logo {
 		display: none;
 	}
+}
+
+.search-box {
+	display: flex;
+	gap: 2.4rem;
 }
 
 .search {

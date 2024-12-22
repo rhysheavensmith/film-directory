@@ -56,16 +56,40 @@ export default function App() {
 	const [movies, setMovies] = useState(tempMovieData);
 	const [watched, setWatched] = useState(tempWatchedData);
 	const [numMovies, setNumMovies] = useState(movies.length);
+	const [searchQuery, setSearchQuery] = useState('matrix');
+
+	const handleSearch = (query) => {
+		setSearchQuery(query);
+	};
 
 	useEffect(() => {
 		setNumMovies(movies.length);
 	}, [movies]);
 
-	// const key = import.meta.env.VITE_API_KEY;
+	useEffect(() => {
+		const fetchMovies = async (query) => {
+			try {
+				const response = await fetch(
+					`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`
+				);
+				const data = await response.json();
+				if (data.Search) {
+					setMovies(data.Search);
+					setNumMovies(data.Search.length);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		fetchMovies(searchQuery);
+	}, [handleSearch]);
+
+	const API_KEY = import.meta.env.VITE_API_KEY;
 
 	return (
 		<>
-			<NavBar numMovies={numMovies} />
+			<NavBar numMovies={numMovies} onSearch={handleSearch} />
 			<Main>
 				<MovieList movies={movies} />
 				<WatchedList watched={watched} />
