@@ -83,7 +83,7 @@ export default function App() {
 		};
 
 		fetchMovies(searchQuery);
-	}, [handleSearch]);
+	}, [searchQuery]);
 
 	const API_KEY = import.meta.env.VITE_API_KEY;
 

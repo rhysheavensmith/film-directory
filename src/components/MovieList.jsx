@@ -2,9 +2,25 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import Button from './Button';
 
+import LoadingSpinner from './LoadingSpinner';
+
 const MovieList = ({ movies }) => {
 	const [isOpen, setIsOpen] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 
+	//function to set a timeout to allow the component to render
+	// Function to toggle the list with a delay for rendering
+	const toggleList = () => {
+		if (!isOpen) {
+			setIsLoading(true);
+			setTimeout(() => {
+				setIsOpen(true);
+				setIsLoading(false); // Open the list after a delay
+			}, 1000); // Adjust delay as needed
+		} else {
+			setIsOpen(false);
+		}
+	};
 	// Define animation variants for the list items
 	const itemVariants = {
 		hidden: { opacity: 0, y: -20 },
@@ -13,13 +29,13 @@ const MovieList = ({ movies }) => {
 
 	return (
 		<div className='box'>
-			<Button className='btn-toggle' onClick={() => setIsOpen((open) => !open)}>
+			<Button className='btn-toggle' onClick={toggleList}>
 				{isOpen ? '–' : '+'}
 			</Button>
 			<AnimatePresence>
-				{isOpen && (
+				{isOpen ? (
 					<motion.ul
-						className='list'
+						className='list list-motion'
 						initial='hidden'
 						exit='hidden'
 						animate='visible'
@@ -54,7 +70,11 @@ const MovieList = ({ movies }) => {
 							</motion.li>
 						))}
 					</motion.ul>
-				)}
+				) : isLoading ? (
+					<div className='loader'>
+						<LoadingSpinner />
+					</div>
+				) : null}
 			</AnimatePresence>
 		</div>
 	);
