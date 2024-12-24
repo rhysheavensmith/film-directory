@@ -1,9 +1,11 @@
-const Star = ({ isFull, index, onRate }) => {
+const Star = ({ isFull, index, onRate, onHover, isHovered, onLeaveHover }) => {
 	return (
 		<span
 			key={index}
 			role='button'
 			onClick={() => onRate(index)}
+			onMouseEnter={() => onHover(index)}
+			onMouseLeave={onLeaveHover}
 			style={{
 				display: 'blok',
 				cursor: 'pointer',
@@ -12,7 +14,7 @@ const Star = ({ isFull, index, onRate }) => {
 			}}
 		>
 			{' '}
-			{isFull ? (
+			{isFull || isHovered ? (
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
 					viewBox='0 0 20 20'
