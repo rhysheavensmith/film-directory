@@ -4,6 +4,7 @@ import NavBar from './components/NavBar';
 import MovieList from './components/MovieList';
 import WatchedList from './components/WatchedList';
 import Main from './components/Main';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const tempMovieData = [
 	{
@@ -52,11 +53,14 @@ const tempWatchedData = [
 	},
 ];
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+
 export default function App() {
-	const [movies, setMovies] = useState(tempMovieData);
+	const [movies, setMovies] = useState([]);
 	const [watched, setWatched] = useState(tempWatchedData);
-	const [numMovies, setNumMovies] = useState(movies.length);
+	const [numMovies, setNumMovies] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('matrix');
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSearch = (query) => {
 		setSearchQuery(query);
@@ -69,6 +73,7 @@ export default function App() {
 	useEffect(() => {
 		const fetchMovies = async (query) => {
 			try {
+				setIsLoading(true);
 				const response = await fetch(
 					`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`
 				);
@@ -79,13 +84,14 @@ export default function App() {
 				}
 			} catch (error) {
 				console.error(error);
+				setIsLoading(false);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
 		fetchMovies(searchQuery);
 	}, [searchQuery]);
-
-	const API_KEY = import.meta.env.VITE_API_KEY;
 
 	return (
 		<>
@@ -95,8 +101,14 @@ export default function App() {
 				query={searchQuery}
 			/>
 			<Main>
-				<MovieList movies={movies} />
-				<WatchedList watched={watched} />
+				{isLoading ? (
+					<LoadingSpinner />
+				) : (
+					<>
+						<MovieList movies={movies} />
+						<WatchedList watched={watched} />
+					</>
+				)}
 			</Main>
 		</>
 	);

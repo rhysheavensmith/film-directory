@@ -42,6 +42,12 @@ body {
 	border-radius: 0.9rem;
 }
 
+.nav-bar form {
+	display: flex;
+	align-items: center;
+	gap: 2.4rem;
+}
+
 @media (max-width: 950px) {
 	.nav-bar input {
 		max-width: 50%;

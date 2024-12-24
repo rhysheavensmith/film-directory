@@ -9,6 +9,11 @@ const NavBar = ({ numMovies, onSearch }) => {
 		onSearch(text);
 	};
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		handleSearch(searchText);
+	};
+
 	return (
 		<motion.nav
 			className='nav-bar'
@@ -29,28 +34,29 @@ const NavBar = ({ numMovies, onSearch }) => {
 					justifyContent: 'space-between',
 				}}
 			>
-				<input
-					className='search'
-					type='text'
-					placeholder='Search movies...'
-					onChange={(e) => setSearchText(e.target.value)}
-				/>
-				<button
-					onClick={() => handleSearch(searchText)}
-					style={{
-						padding: '0.8rem 3rem',
-						fontSize: '1.3rem',
-						fontWeight: 'bold',
-						backgroundColor: '#7950f2',
-						border: 'none',
-						borderRadius: '0.5rem',
-						color: '#dee2e6',
-						focus: 'none',
-						cursor: 'pointer',
-					}}
-				>
-					Search
-				</button>
+				<form onSubmit={handleSubmit}>
+					<input
+						className='search'
+						type='text'
+						placeholder='Search movies...'
+						onChange={(e) => setSearchText(e.target.value)}
+					/>
+					<button
+						style={{
+							padding: '0.8rem 3rem',
+							fontSize: '1.3rem',
+							fontWeight: 'bold',
+							backgroundColor: '#7950f2',
+							border: 'none',
+							borderRadius: '0.5rem',
+							color: '#dee2e6',
+							focus: 'none',
+							cursor: 'pointer',
+						}}
+					>
+						Search
+					</button>
+				</form>
 			</div>
 
 			<p className='num-results'>
