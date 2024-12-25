@@ -9,7 +9,6 @@ const MovieList = ({ movies }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	//function to set a timeout to allow the component to render
-	// Function to toggle the list with a delay for rendering
 	const toggleList = () => {
 		if (!isOpen) {
 			setIsLoading(true);

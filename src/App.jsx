@@ -56,11 +56,11 @@ const tempWatchedData = [
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export default function App() {
-	const [movies, setMovies] = useState([]);
+	const [movies, setMovies] = useState(tempMovieData);
 	const [watched, setWatched] = useState(tempWatchedData);
 	const [numMovies, setNumMovies] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('matrix');
-	const [isLoading, setIsLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const handleSearch = (query) => {
 		setSearchQuery(query);
@@ -73,7 +73,7 @@ export default function App() {
 	useEffect(() => {
 		const fetchMovies = async (query) => {
 			try {
-				setIsLoading(true);
+				setLoading(true);
 				const response = await fetch(
 					`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`
 				);
@@ -84,9 +84,8 @@ export default function App() {
 				}
 			} catch (error) {
 				console.error(error);
-				setIsLoading(false);
 			} finally {
-				setIsLoading(false);
+				setLoading(false);
 			}
 		};
 
@@ -101,7 +100,7 @@ export default function App() {
 				query={searchQuery}
 			/>
 			<Main>
-				{isLoading ? (
+				{loading ? (
 					<LoadingSpinner />
 				) : (
 					<>
