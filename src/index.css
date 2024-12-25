@@ -79,7 +79,8 @@ body {
 	max-width: 42rem;
 	background-color: var(--color-background-500);
 	border-radius: 0.9rem;
-	overflow: scroll;
+	overflow-y: auto;
+	overflow-x: hidden;
 	position: relative;
 	min-height: 20rem;
 }
@@ -177,7 +178,6 @@ body {
 .list {
 	list-style: none;
 	padding: 0.8rem 0;
-	overflow: scroll;
 }
 
 .list-watched {
@@ -376,6 +376,23 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+/* Hide scrollbar for Chrome, Safari, Opera */
+.box::-webkit-scrollbar,
+.list::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.box {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.list {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 
 /*
