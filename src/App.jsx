@@ -35,7 +35,7 @@ export default function App() {
 	const [movies, setMovies] = useState([]);
 	const [watched, setWatched] = useState(tempWatchedData);
 	const [numMovies, setNumMovies] = useState(0);
-	const [searchQuery, setSearchQuery] = useState('matrix');
+	const [searchQuery, setSearchQuery] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [fetchError, setFetchError] = useState(null);
 

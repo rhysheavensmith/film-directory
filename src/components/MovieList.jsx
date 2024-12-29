@@ -33,42 +33,48 @@ const MovieList = ({ movies }) => {
 			</Button>
 			<AnimatePresence>
 				{isOpen ? (
-					<motion.ul
-						className='list list-motion'
-						initial='hidden'
-						exit='hidden'
-						animate='visible'
-						repeat={1}
-						repeatType='reverse'
-						layout
-						variants={{
-							hidden: {
-								opacity: 0,
-								transition: { staggerChildren: 0.3, staggerDirection: -1 },
-							},
-							visible: {
-								opacity: 1,
-								transition: { staggerChildren: 0.3, staggerDirection: 1 },
-							},
-						}}
-					>
-						{movies?.map((movie) => (
-							<motion.li
-								key={movie.imdbID}
-								variants={itemVariants}
-								whileHover={{ scale: 1.05, cursor: 'pointer' }}
-								transition={{ type: 'spring', stiffness: 200 }}
-							>
-								<img src={movie.Poster} alt={`${movie.Title} poster`} />
-								<h3>{movie.Title}</h3>
-								<div>
-									<p style={{ opacity: 0.7, marginTop: '0.5rem' }}>
-										<span>{movie.Year}</span>
-									</p>
-								</div>
-							</motion.li>
-						))}
-					</motion.ul>
+					!movies?.length ? ( // Check if movies array is empty
+						<div style={{ textAlign: 'center', marginTop: '1rem' }}>
+							<p style={{ textAlign: 'center', opacity: 0.7 }}>
+								Search for a movie to see results!
+							</p>
+						</div>
+					) : (
+						<motion.ul
+							className='list list-motion'
+							initial='hidden'
+							exit='hidden'
+							animate='visible'
+							layout
+							variants={{
+								hidden: {
+									opacity: 0,
+									transition: { staggerChildren: 0.3, staggerDirection: -1 },
+								},
+								visible: {
+									opacity: 1,
+									transition: { staggerChildren: 0.3, staggerDirection: 1 },
+								},
+							}}
+						>
+							{movies.map((movie) => (
+								<motion.li
+									key={movie.imdbID}
+									variants={itemVariants}
+									whileHover={{ scale: 1.05, cursor: 'pointer' }}
+									transition={{ type: 'spring', stiffness: 200 }}
+								>
+									<img src={movie.Poster} alt={`${movie.Title} poster`} />
+									<h3>{movie.Title}</h3>
+									<div>
+										<p style={{ opacity: 0.7, marginTop: '0.5rem' }}>
+											<span>{movie.Year}</span>
+										</p>
+									</div>
+								</motion.li>
+							))}
+						</motion.ul>
+					)
 				) : isLoading ? (
 					<div className='loader'>
 						<LoadingSpinner />
