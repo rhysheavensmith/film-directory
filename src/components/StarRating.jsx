@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Star from './Star';
 
 // Did a few inline styles for demonstration purposes
-const StarRating = ({ maxRating = 10 }) => {
+const StarRating = ({ maxRating = 10, color = '#fcc419', size = 48 }) => {
 	const [rating, setRating] = useState(0);
 	const [hoverRating, setHoverRating] = useState(0);
 
@@ -18,6 +18,13 @@ const StarRating = ({ maxRating = 10 }) => {
 		setHoverRating(0);
 	};
 
+	const textStyle = {
+		lineHeight: 1,
+		margin: 0,
+		color: color,
+		fontSize: `${size / 1.5}px`,
+	};
+
 	return (
 		<div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
 			<div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -30,10 +37,12 @@ const StarRating = ({ maxRating = 10 }) => {
 						isFull={rating >= i + 1}
 						isHovered={hoverRating >= i + 1}
 						onLeaveHover={handleLeaveHoverState}
+						color={color}
+						size={size}
 					/>
 				))}
 			</div>
-			<p style={{ lineHeight: 1, marign: 0 }}>{rating || hoverRating || ''}</p>
+			<p style={textStyle}>{rating || hoverRating || ''}</p>
 		</div>
 	);
 };

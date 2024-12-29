@@ -14,6 +14,7 @@ const NavBar = ({ numMovies, onSearch }) => {
 		handleSearch(searchText);
 	};
 
+	// added a few inline styles for demonstration purposes
 	return (
 		<motion.nav
 			className='nav-bar'

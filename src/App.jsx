@@ -6,30 +6,6 @@ import WatchedList from './components/WatchedList';
 import Main from './components/Main';
 import LoadingSpinner from './components/LoadingSpinner';
 
-const tempMovieData = [
-	{
-		imdbID: 'tt1375666',
-		Title: 'Inception',
-		Year: '2010',
-		Poster:
-			'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg',
-	},
-	{
-		imdbID: 'tt0133093',
-		Title: 'The Matrix',
-		Year: '1999',
-		Poster:
-			'https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg',
-	},
-	{
-		imdbID: 'tt6751668',
-		Title: 'Parasite',
-		Year: '2019',
-		Poster:
-			'https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg',
-	},
-];
-
 const tempWatchedData = [
 	{
 		imdbID: 'tt1375666',
@@ -56,11 +32,12 @@ const tempWatchedData = [
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export default function App() {
-	const [movies, setMovies] = useState(tempMovieData);
+	const [movies, setMovies] = useState([]);
 	const [watched, setWatched] = useState(tempWatchedData);
 	const [numMovies, setNumMovies] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('matrix');
 	const [loading, setLoading] = useState(false);
+	const [fetchError, setFetchError] = useState(null);
 
 	const handleSearch = (query) => {
 		setSearchQuery(query);
@@ -71,25 +48,54 @@ export default function App() {
 	}, [movies]);
 
 	useEffect(() => {
+		// AbortController to cancel fetch request
+		const controller = new AbortController();
+		const signal = controller.signal;
+
+		// Fetch movies from the API
 		const fetchMovies = async (query) => {
 			try {
 				setLoading(true);
+				setFetchError(null); // Reset fetch error
 				const response = await fetch(
-					`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`
+					`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`,
+					{ signal } // Pass the signal to the fetch request
 				);
+
+				// Check if the fetch request was aborted
+				if (!response.ok) {
+					throw new Error(`Failed to fetch movies ${response.status}`);
+				}
+
 				const data = await response.json();
+
+				if (data.response === 'False') {
+					throw new Error(data.Error);
+				}
+
 				if (data.Search) {
 					setMovies(data.Search);
 					setNumMovies(data.Search.length);
+				} else {
+					setMovies([]);
+					setNumMovies(0);
 				}
 			} catch (error) {
-				console.error(error);
+				if (error.name !== 'AbortError') {
+					setFetchError(error.message);
+				}
+				// Handle other errors
 			} finally {
 				setLoading(false);
 			}
 		};
 
 		fetchMovies(searchQuery);
+
+		// Cleanup function to cancel the fetch request
+		return () => {
+			controller.abort();
+		};
 	}, [searchQuery]);
 
 	return (
@@ -100,9 +106,14 @@ export default function App() {
 				query={searchQuery}
 			/>
 			<Main>
-				{loading ? (
-					<LoadingSpinner />
-				) : (
+				{loading && <LoadingSpinner />}
+				{fetchError && (
+					<div style={{ color: 'red', textAlign: 'center', margin: '20px 0' }}>
+						<p>Error: {fetchError}</p>
+						<button onClick={() => handleSearch(searchQuery)}>Try Again</button>
+					</div>
+				)}
+				{!loading && !fetchError && (
 					<>
 						<MovieList movies={movies} />
 						<WatchedList watched={watched} />

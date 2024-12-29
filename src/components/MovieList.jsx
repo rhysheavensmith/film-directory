@@ -15,7 +15,7 @@ const MovieList = ({ movies }) => {
 			setTimeout(() => {
 				setIsOpen(true);
 				setIsLoading(false); // Open the list after a delay
-			}, 1000); // Adjust delay as needed
+			}, 1000); // Adjust delay as to qllow the animation to render
 		} else {
 			setIsOpen(false);
 		}
