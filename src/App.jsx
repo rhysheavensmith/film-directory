@@ -100,11 +100,7 @@ export default function App() {
 
 	return (
 		<>
-			<NavBar
-				numMovies={numMovies}
-				onSearch={handleSearch}
-				query={searchQuery}
-			/>
+			<NavBar numMovies={numMovies} onSearch={handleSearch} />
 			<Main>
 				{loading && <LoadingSpinner />}
 				{fetchError && (

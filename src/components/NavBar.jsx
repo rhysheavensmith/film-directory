@@ -1,17 +1,13 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 
 import { motion } from 'motion/react';
 
 const NavBar = ({ numMovies, onSearch }) => {
-	const [searchText, setSearchText] = useState('');
-
-	const handleSearch = (text) => {
-		onSearch(text);
-	};
+	const searchRef = useRef();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		handleSearch(searchText);
+		onSearch(searchRef.current.value);
 	};
 
 	// added a few inline styles for demonstration purposes
@@ -40,7 +36,7 @@ const NavBar = ({ numMovies, onSearch }) => {
 						className='search'
 						type='text'
 						placeholder='Search movies...'
-						onChange={(e) => setSearchText(e.target.value)}
+						ref={searchRef}
 					/>
 					<button
 						style={{

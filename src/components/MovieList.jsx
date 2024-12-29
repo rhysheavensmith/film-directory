@@ -8,7 +8,9 @@ const MovieList = ({ movies }) => {
 	const [isOpen, setIsOpen] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
 
-	//function to set a timeout to allow the component to render
+	// function to set a timeout to allow the component to render
+	// does not need to be in useEffect because it is not
+	// dependent on anything outside of the component
 	const toggleList = () => {
 		if (!isOpen) {
 			setIsLoading(true);
@@ -20,6 +22,7 @@ const MovieList = ({ movies }) => {
 			setIsOpen(false);
 		}
 	};
+
 	// Define animation variants for the list items
 	const itemVariants = {
 		hidden: { opacity: 0, y: -20 },
