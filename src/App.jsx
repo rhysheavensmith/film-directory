@@ -38,15 +38,19 @@ export default function App() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [fetchError, setFetchError] = useState(null);
+	const [movieId, setMovieId] = useState(null);
 
+	// Handle search query
 	const handleSearch = (query) => {
 		setSearchQuery(query);
 	};
 
+	// Update the number of movies when the movies array changes
 	useEffect(() => {
 		setNumMovies(movies.length);
 	}, [movies]);
 
+	// fetch movie details
 	useEffect(() => {
 		// AbortController to cancel fetch request
 		const controller = new AbortController();
@@ -98,6 +102,19 @@ export default function App() {
 		};
 	}, [searchQuery]);
 
+	// function to set the movie ID
+	const handleMovieId = (id) => {
+		setMovieId((prevId) => (prevId === id ? null : id));
+	};
+
+	const handleCloseMovie = () => {
+		setMovieId(null);
+	};
+
+	useEffect(() => {
+		console.log(movieId);
+	}, [movieId]);
+
 	return (
 		<>
 			<NavBar numMovies={numMovies} onSearch={handleSearch} />
@@ -111,8 +128,12 @@ export default function App() {
 				)}
 				{!loading && !fetchError && (
 					<>
-						<MovieList movies={movies} />
-						<WatchedList watched={watched} />
+						<MovieList movies={movies} onSelectMovie={handleMovieId} />
+						<WatchedList
+							watched={watched}
+							currentMovie={movieId}
+							goBack={handleCloseMovie}
+						/>
 					</>
 				)}
 			</Main>

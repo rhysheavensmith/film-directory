@@ -4,7 +4,7 @@ import Button from './Button';
 
 import LoadingSpinner from './LoadingSpinner';
 
-const MovieList = ({ movies }) => {
+const MovieList = ({ movies, onSelectMovie }) => {
 	const [isOpen, setIsOpen] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -62,6 +62,7 @@ const MovieList = ({ movies }) => {
 						>
 							{movies.map((movie) => (
 								<motion.li
+									onClick={() => onSelectMovie(movie.imdbID)}
 									key={movie.imdbID}
 									variants={itemVariants}
 									whileHover={{ scale: 1.05, cursor: 'pointer' }}
