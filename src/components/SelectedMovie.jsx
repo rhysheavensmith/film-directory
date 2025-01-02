@@ -19,7 +19,7 @@ const itemVariants = {
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-const SelectedMovie = ({ movieId, onClose }) => {
+const SelectedMovie = ({ movieId, onClose, onAddMovie }) => {
 	const [fetchError, setFetchError] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [movieDetails, setMovieDetails] = useState({});
@@ -51,8 +51,9 @@ const SelectedMovie = ({ movieId, onClose }) => {
 				}
 
 				if (data) {
-					console.log(data);
+					// console.log(data);
 					setMovieDetails(data);
+					setLoading(false);
 				} else {
 					setMovieDetails({});
 				}
@@ -73,6 +74,21 @@ const SelectedMovie = ({ movieId, onClose }) => {
 			controller.abort();
 		};
 	}, [movieId]);
+
+	// Add the movie to the watched list
+	const handleAddMovie = () => {
+		const newMovie = {
+			Title: movieDetails.Title,
+			Year: movieDetails.Year,
+			imdbRating: Number(movieDetails.imdbRating).toFixed(1),
+			userRating: 0,
+			runtime: movieDetails.Runtime.split(' ')[0],
+			Poster: movieDetails.Poster,
+			imdbID: movieDetails.imdbID,
+		};
+		onAddMovie(newMovie);
+		onClose();
+	};
 
 	return (
 		<AnimatePresence>
@@ -119,6 +135,11 @@ const SelectedMovie = ({ movieId, onClose }) => {
 							</div>
 						</header>
 						<section>
+							<div className='rating'>
+								<StarRating size={24} />
+								<button onClick={handleAddMovie}>Add to Watched</button>
+							</div>
+
 							<p>
 								<em>{movieDetails.Plot}</em>
 							</p>

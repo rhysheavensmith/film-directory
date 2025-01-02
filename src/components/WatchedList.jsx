@@ -7,7 +7,7 @@ import SelectedMovie from './SelectedMovie';
 const average = (arr) =>
 	arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const WatchedList = ({ watched, currentMovie, goBack }) => {
+const WatchedList = ({ watched, currentMovie, goBack, onAddMovie }) => {
 	// set the initial state of the component to be open
 	const [isOpen, setIsOpen] = useState(true);
 	// calculate the average IMDb rating, user rating, and runtime of the watched movies
@@ -28,7 +28,11 @@ const WatchedList = ({ watched, currentMovie, goBack }) => {
 			</Button>
 			<AnimatePresence>
 				{isOpen && currentMovie ? (
-					<SelectedMovie movieId={currentMovie} onClose={goBack} />
+					<SelectedMovie
+						movieId={currentMovie}
+						onClose={goBack}
+						onAddMovie={onAddMovie}
+					/>
 				) : (
 					isOpen && (
 						<>
@@ -52,7 +56,7 @@ const WatchedList = ({ watched, currentMovie, goBack }) => {
 									</p>
 									<p>
 										<span>⭐️</span>
-										<span>{avgImdbRating}</span>
+										<span>{avgImdbRating.toFixed(1)}</span>
 									</p>
 									<p>
 										<span>🌟</span>
