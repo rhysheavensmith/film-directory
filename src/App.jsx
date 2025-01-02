@@ -61,6 +61,7 @@ export default function App() {
 			try {
 				setLoading(true);
 				setFetchError(null); // Reset fetch error
+				setMovieId(null); // Reset movie ID
 				const response = await fetch(
 					`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`,
 					{ signal } // Pass the signal to the fetch request
