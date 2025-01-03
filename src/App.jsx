@@ -93,6 +93,12 @@ export default function App() {
 		setWatched((prevWatched) => [...prevWatched, movie]);
 	};
 
+	const handleDeleteMovie = (id) => {
+		setWatched((prevWatched) =>
+			prevWatched.filter((movie) => movie.imdbID !== id)
+		);
+	};
+
 	return (
 		<>
 			<NavBar numMovies={numMovies} onSearch={handleSearch} />
@@ -113,6 +119,7 @@ export default function App() {
 							goBack={handleCloseMovie}
 							onAddMovie={handleAddMovie}
 							onSelectMovie={handleMovieId}
+							onDeleteMovie={handleDeleteMovie}
 						/>
 					</>
 				)}

@@ -14,6 +14,7 @@ const WatchedList = ({
 	goBack,
 	onAddMovie,
 	onSelectMovie,
+	onDeleteMovie,
 }) => {
 	// set the initial state of the component to be open
 	const [isOpen, setIsOpen] = useState(true);
@@ -119,24 +120,34 @@ const WatchedList = ({
 										variants={itemVariants}
 										whileHover={{ scale: 1.05, cursor: 'pointer' }}
 										transition={{ type: 'spring', stiffness: 200 }}
-										onClick={() => onSelectMovie(movie.imdbID)}
 									>
-										<img src={movie.Poster} alt={`${movie.Title} poster`} />
-										<h3>{movie.Title}</h3>
-										<div>
-											<p>
-												<span>⭐️</span>
-												<span>{movie.imdbRating}</span>
-											</p>
-											<p>
-												<span>🌟</span>
-												<span>{movie.userRating}</span>
-											</p>
-											<p>
-												<span>⏳</span>
-												<span>{movie.runtime} min</span>
-											</p>
+										<div onClick={() => onSelectMovie(movie.imdbID)}>
+											<img src={movie.Poster} alt={`${movie.Title} poster`} />
+											<h3>{movie.Title}</h3>
+											<div>
+												<p>
+													<span>⭐️</span>
+													<span>{movie.imdbRating}</span>
+												</p>
+												<p>
+													<span>🌟</span>
+													<span>{movie.userRating}</span>
+												</p>
+												<p>
+													<span>⏳</span>
+													<span>{movie.runtime} min</span>
+												</p>
+											</div>
 										</div>
+
+										<motion.button
+											className='btn-delete'
+											onClick={() => onDeleteMovie(movie.imdbID)}
+											whileHover={{ scale: 1.5 }}
+											transition={{ duration: 0.1 }}
+										>
+											X
+										</motion.button>
 									</motion.li>
 								))}
 							</motion.ul>

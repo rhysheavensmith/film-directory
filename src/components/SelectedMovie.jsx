@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 
 import StarRating from './StarRating';
 import LoadingSpinner from './LoadingSpinner';
-import { s } from 'motion/react-client';
+import { p, s } from 'motion/react-client';
 
 const itemVariants = {
 	hidden: {
@@ -150,9 +150,19 @@ const SelectedMovie = ({ movieId, onClose, onAddMovie, watched }) => {
 						<section>
 							<div className='rating'>
 								<StarRating size={24} onAddRating={getStarRating} />
-								<button className='btn-add' onClick={handleAddMovie}>
-									Add to Watched
-								</button>
+								{watched.some(
+									(movie) => movie.imdbID === movieDetails.imdbID
+								) ? (
+									<p>You already rated this movie.</p>
+								) : (
+									<button
+										className='btn-add'
+										onClick={handleAddMovie}
+										disabled={starRating === 0}
+									>
+										Add to Watched
+									</button>
+								)}
 							</div>
 
 							<p>
