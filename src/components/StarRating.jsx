@@ -2,11 +2,17 @@ import { useState } from 'react';
 import Star from './Star';
 
 // Did a few inline styles for demonstration purposes
-const StarRating = ({ maxRating = 10, color = '#fcc419', size = 48 }) => {
+const StarRating = ({
+	maxRating = 10,
+	color = '#fcc419',
+	size = 48,
+	onAddRating,
+}) => {
 	const [rating, setRating] = useState(0);
 	const [hoverRating, setHoverRating] = useState(0);
 
 	const handleClick = (index) => {
+		onAddRating(index + 1);
 		setRating(index + 1);
 	};
 

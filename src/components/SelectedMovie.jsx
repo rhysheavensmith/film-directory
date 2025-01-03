@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 
 import StarRating from './StarRating';
 import LoadingSpinner from './LoadingSpinner';
+import { s } from 'motion/react-client';
 
 const itemVariants = {
 	hidden: {
@@ -19,10 +20,11 @@ const itemVariants = {
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-const SelectedMovie = ({ movieId, onClose, onAddMovie }) => {
+const SelectedMovie = ({ movieId, onClose, onAddMovie, watched }) => {
 	const [fetchError, setFetchError] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [movieDetails, setMovieDetails] = useState({});
+	const [starRating, setStarRating] = useState(0);
 	// fetch the movie details
 	useEffect(() => {
 		// AbortController to cancel fetch request
@@ -77,17 +79,28 @@ const SelectedMovie = ({ movieId, onClose, onAddMovie }) => {
 
 	// Add the movie to the watched list
 	const handleAddMovie = () => {
+		// Check if the movie is already in the watched list
+		if (watched.some((movie) => movie.imdbID === movieDetails.imdbID)) {
+			alert('Movie already in the watched list');
+			onClose();
+			return;
+		}
 		const newMovie = {
 			Title: movieDetails.Title,
 			Year: movieDetails.Year,
 			imdbRating: Number(movieDetails.imdbRating).toFixed(1),
-			userRating: 0,
+			userRating: starRating,
 			runtime: movieDetails.Runtime.split(' ')[0],
 			Poster: movieDetails.Poster,
 			imdbID: movieDetails.imdbID,
 		};
 		onAddMovie(newMovie);
 		onClose();
+	};
+
+	// function to get the star rating
+	const getStarRating = (curRating) => {
+		setStarRating(curRating);
 	};
 
 	return (
@@ -136,8 +149,10 @@ const SelectedMovie = ({ movieId, onClose, onAddMovie }) => {
 						</header>
 						<section>
 							<div className='rating'>
-								<StarRating size={24} />
-								<button onClick={handleAddMovie}>Add to Watched</button>
+								<StarRating size={24} onAddRating={getStarRating} />
+								<button className='btn-add' onClick={handleAddMovie}>
+									Add to Watched
+								</button>
 							</div>
 
 							<p>

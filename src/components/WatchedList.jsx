@@ -2,14 +2,22 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import Button from './Button';
 import SelectedMovie from './SelectedMovie';
+import LoadingSpinner from './LoadingSpinner';
 
 // calculate the average of an array of numbers
 const average = (arr) =>
 	arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const WatchedList = ({ watched, currentMovie, goBack, onAddMovie }) => {
+const WatchedList = ({
+	watched,
+	currentMovie,
+	goBack,
+	onAddMovie,
+	onSelectMovie,
+}) => {
 	// set the initial state of the component to be open
 	const [isOpen, setIsOpen] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 	// calculate the average IMDb rating, user rating, and runtime of the watched movies
 	const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
 	const avgUserRating = average(watched.map((movie) => movie.userRating));
@@ -21,17 +29,35 @@ const WatchedList = ({ watched, currentMovie, goBack, onAddMovie }) => {
 		visible: { opacity: 1, y: 0 },
 	};
 
+	const toggleList = () => {
+		if (!isOpen) {
+			setIsLoading(true);
+			setTimeout(() => {
+				setIsOpen(true);
+				setIsLoading(false); // Open the list after a delay
+			}, 1000); // Adjust delay as to qllow the animation to render
+		} else {
+			setIsOpen(false);
+		}
+	};
+
 	return (
 		<div className='box'>
-			<Button className='btn-toggle' onClick={() => setIsOpen((open) => !open)}>
+			<Button className='btn-toggle' onClick={toggleList}>
 				{isOpen ? '–' : '+'}
 			</Button>
 			<AnimatePresence>
+				{isLoading && (
+					<div className='loader'>
+						<LoadingSpinner />
+					</div>
+				)}
 				{isOpen && currentMovie ? (
 					<SelectedMovie
 						movieId={currentMovie}
 						onClose={goBack}
 						onAddMovie={onAddMovie}
+						watched={watched}
 					/>
 				) : (
 					isOpen && (
@@ -64,7 +90,7 @@ const WatchedList = ({ watched, currentMovie, goBack, onAddMovie }) => {
 									</p>
 									<p>
 										<span>⏳</span>
-										<span>{avgRuntime} min</span>
+										<span>{avgRuntime.toFixed(1)} min</span>
 									</p>
 								</div>
 							</motion.div>
@@ -93,6 +119,7 @@ const WatchedList = ({ watched, currentMovie, goBack, onAddMovie }) => {
 										variants={itemVariants}
 										whileHover={{ scale: 1.05, cursor: 'pointer' }}
 										transition={{ type: 'spring', stiffness: 200 }}
+										onClick={() => onSelectMovie(movie.imdbID)}
 									>
 										<img src={movie.Poster} alt={`${movie.Title} poster`} />
 										<h3>{movie.Title}</h3>

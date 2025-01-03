@@ -112,6 +112,7 @@ export default function App() {
 							currentMovie={movieId}
 							goBack={handleCloseMovie}
 							onAddMovie={handleAddMovie}
+							onSelectMovie={handleMovieId}
 						/>
 					</>
 				)}
