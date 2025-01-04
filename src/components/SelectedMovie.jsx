@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'motion/react';
 
 import StarRating from './StarRating';
 import LoadingSpinner from './LoadingSpinner';
-import { p, s } from 'motion/react-client';
 
 const itemVariants = {
 	hidden: {
@@ -102,6 +101,17 @@ const SelectedMovie = ({ movieId, onClose, onAddMovie, watched }) => {
 	const getStarRating = (curRating) => {
 		setStarRating(curRating);
 	};
+
+	// set the document title to the movie title
+	useEffect(() => {
+		if (!movieDetails.Title) return;
+		const previousTitle = document.title;
+		document.title = `Movie Details: ${movieDetails.Title}`;
+		// Reset the title when the component unmounts
+		return () => {
+			document.title = previousTitle;
+		};
+	}, [movieDetails.Title]);
 
 	return (
 		<AnimatePresence>
