@@ -31,6 +31,16 @@ const StarRating = ({
 		fontSize: `${size / 1.5}px`,
 	};
 
+	// useEffect(() => {
+	// 	try {
+	// 		if (rating === 0) return;
+	// 		const currentStarRating = rating;
+	// 		localStorage.setItem('starRating', currentStarRating);
+	// 	} catch (error) {
+	// 		console.log(`Error saving to local storage: ${error.message}`);
+	// 	}
+	// }, [rating]);
+
 	return (
 		<div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
 			<div style={{ display: 'flex', gap: '0.5rem' }}>

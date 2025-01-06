@@ -7,7 +7,11 @@ const NavBar = ({ numMovies, onSearch }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		onSearch(searchRef.current.value);
+		const query = searchRef.current.value.trim();
+		if (query) {
+			onSearch(query);
+			searchRef.current.value = ''; // Clear input after search
+		}
 	};
 
 	// added a few inline styles for demonstration purposes

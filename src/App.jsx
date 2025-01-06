@@ -10,7 +10,18 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 
 export default function App() {
 	const [movies, setMovies] = useState([]);
-	const [watched, setWatched] = useState([]);
+	const [watched, setWatched] = useState(() => {
+		try {
+			const savedList = localStorage.getItem('watched');
+			if (savedList) {
+				return JSON.parse(savedList);
+			}
+		} catch (error) {
+			console.log(`Error loading from local storage: ${error.message}`);
+			return [];
+		}
+		return [];
+	});
 	const [numMovies, setNumMovies] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -79,6 +90,16 @@ export default function App() {
 			controller.abort();
 		};
 	}, [searchQuery]);
+
+	// save the watched list to local storage
+	useEffect(() => {
+		try {
+			const watchedList = JSON.stringify(watched);
+			localStorage.setItem('watched', watchedList);
+		} catch (error) {
+			console.log(`Error saving to local storage: ${error.message}`);
+		}
+	}, [watched]);
 
 	// function to set the movie ID
 	const handleMovieId = (id) => {

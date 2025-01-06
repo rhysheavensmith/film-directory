@@ -88,7 +88,7 @@ const SelectedMovie = ({ movieId, onClose, onAddMovie, watched }) => {
 			Title: movieDetails.Title,
 			Year: movieDetails.Year,
 			imdbRating: Number(movieDetails.imdbRating).toFixed(1),
-			userRating: starRating,
+			userRating: starRating.toFixed(1),
 			runtime: movieDetails.Runtime.split(' ')[0],
 			Poster: movieDetails.Poster,
 			imdbID: movieDetails.imdbID,
@@ -97,7 +97,8 @@ const SelectedMovie = ({ movieId, onClose, onAddMovie, watched }) => {
 		onClose();
 	};
 
-	// function to get the star rating
+	// function to get the star rating and save to local storage
+
 	const getStarRating = (curRating) => {
 		setStarRating(curRating);
 	};
